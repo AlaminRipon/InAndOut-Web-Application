@@ -1,10 +1,13 @@
 ﻿@model InAndOut.Models.Expense
+@{
+    ViewData["Title"] = "Update";
+}
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Update">
     <div class="border p-3">
         @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
         <div class="form-group row">
-            <h2 class="text-black-50">Add Expense</h2>
+            <h2 class="text-black-50">Delete Expense</h2>
         </div>
         <div class="row">
             <div class="col-12">
@@ -19,17 +22,15 @@
                 <div class="form-group row">
                     <div class="col-6">
                         <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="col-6">
                         <input asp-for="Cost" class="form-control" />
-                        <span asp-validation-for="Cost" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-8 text-center row">
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-75" value="Create" />
+                            <input type="submit" class="btn btn-success w-75" value="Delete" />
                         </div>
                         <div class="col">
                             <a asp-controller="Expense" asp-action="Index" class="btn btn-danger w-75">Go Back</a>
@@ -44,3 +45,4 @@
 @section Scripts{
     @{ <partial name="_ValidationScriptsPartial" />}
 }
+

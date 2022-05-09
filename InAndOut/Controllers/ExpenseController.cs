@@ -2,6 +2,7 @@
 using InAndOut.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace InAndOut.Controllers
 {
@@ -26,11 +27,55 @@ namespace InAndOut.Controllers
             return View();  
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Expense obj)
         {
-            _db.Expenses.Add(obj);
+            if (ModelState.IsValid)
+            {
+                _db.Expenses.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(obj);   
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            var exp = _db.Expenses.FirstOrDefault(x => x.Id == id);
+            var result = new Expense()
+            {
+                Name = exp.Name,
+                Cost = exp.Cost,
+            };
+            return View(result);
+        }
+
+        public IActionResult Update(Expense model)
+        {
+            var exp = new Expense()
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Cost = model.Cost,
+            };
+            _db.Expenses.Update(exp);
             _db.SaveChanges();
+            TempData["message"] = "Record Updated";
             return RedirectToAction("Index");
         }
+
+        public IActionResult Delete(int id)
+        {
+            var exp = _db.Expenses.SingleOrDefault(e => e.Id == id);
+            _db.Expenses.Remove(exp);
+            _db.SaveChanges();
+            TempData["message"] = "Record Deleted";
+            return RedirectToAction("Index");
+        }
+
     }
 }
